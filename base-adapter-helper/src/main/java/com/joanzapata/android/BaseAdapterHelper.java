@@ -27,13 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.Checkable;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -65,7 +59,7 @@ public class BaseAdapterHelper {
     /** Package private field to retain the associated user object and detect a change */
     Object associatedObject;
 
-    private BaseAdapterHelper(Context context, ViewGroup parent, int layoutId, int position) {
+    protected BaseAdapterHelper(Context context, ViewGroup parent, int layoutId, int position) {
         this.context = context;
         this.position = position;
         this.views = new SparseArray<View>();
@@ -385,6 +379,39 @@ public class BaseAdapterHelper {
     }
 
     /**
+     * Sets the listview or gridview's item click listener of the view
+     * @param viewId  The view id.
+     * @param listener The item on click listener;
+     * @return The BaseAdapterHelper for chaining.
+     */
+    public BaseAdapterHelper setOnItemClickListener(int viewId,AdapterView.OnItemClickListener listener) {
+        AdapterView view = retrieveView(viewId);
+        view.setOnItemClickListener(listener);
+        return this;
+    }
+    /**
+     * Sets the listview or gridview's item long click listener of the view
+     * @param viewId The view id.
+     * @param listener   The item long click listener;
+     * @return The BaseAdapterHelper for chaining.
+     */
+    public BaseAdapterHelper setOnItemLongClickListener(int viewId,AdapterView.OnItemLongClickListener listener) {
+        AdapterView view = retrieveView(viewId);
+        view.setOnItemLongClickListener(listener);
+        return this;
+    }
+    /**
+     * Sets the listview or gridview's item selected click listener of the view
+     * @param viewId The view id.
+     * @param listener The item selected click listener;
+     * @return The BaseAdapterHelper for chaining.
+     */
+    public BaseAdapterHelper setOnItemSelectedClickListener(int viewId,AdapterView.OnItemSelectedListener listener) {
+        AdapterView view = retrieveView(viewId);
+        view.setOnItemSelectedListener(listener);
+        return this;
+    }
+    /**
      * Sets the tag of the view.
      * @param viewId The view id.
      * @param tag    The tag;
@@ -450,7 +477,7 @@ public class BaseAdapterHelper {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends View> T retrieveView(int viewId) {
+    protected <T extends View> T retrieveView(int viewId) {
         View view = views.get(viewId);
         if (view == null) {
             view = convertView.findViewById(viewId);
